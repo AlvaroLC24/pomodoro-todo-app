@@ -2,41 +2,43 @@ let minutes = 0;
 let seconds = 10;
 let isCounting = false;
 let intervalId;
+let isWorkPhase = true;
 //let num = Number(10).toFixed(2);
 
 // console.log(new Date(minutes=2, seconds=0));
 
 
 function startCountdown() {
-  if (!isCounting) {
-    intervalId = setInterval(() => {
-      if (seconds === 0) {
-        seconds = 60
-        minutes--;
-      }
-      seconds--;
-      if (minutes === 0 && seconds === 1) {
-        document.querySelector('.js-audio').play();
-      }
-
-      if (minutes === 0 && seconds === 0) {
-        //clearInterval(intervalId);
-        console.log('¡Cuenta finalizada!')
-        // const timerDisplay = document.querySelector('.js-timer')
-        // timerDisplay.textContent = 'Get some rest!'
-        // await delay(2000);
-
-        minutes = 5;
-        seconds = 0;
-      }
-      updateScreen();
-    }, 1000);
-    isCounting = true;
-
-  } else {
+  if (isCounting) {
     clearInterval(intervalId);
     isCounting = false;
+    return;
   }
+
+  isCounting = true;
+  intervalId = setInterval(() => {
+    if (seconds === 1 && minutes == 0) {
+      document.querySelector('.js-audio').play();
+    }
+
+    if (seconds === 0) {
+      if (minutes === 0) {
+        clearInterval(intervalId);
+        console.log('¡Cuenta finalizada!');
+        isCounting = false;
+
+        handlePhaseEnd(); // Maneja lo que pasa cuando termina la fase
+        return;
+      } else {
+        minutes--;
+        seconds = 59;
+      }
+    } else {
+      seconds--;
+    }
+
+    updateScreen();
+  }, 1000);
 }
 
 
@@ -46,6 +48,9 @@ function stopCountdown() {
   isCounting = false;
 }
 
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 function updateScreen() {
   document.querySelector('.js-timer')
@@ -69,6 +74,28 @@ function updateScreen() {
   //     updateScreen();
   //   }, 2000);
   // }
+}
+
+
+async function handlePhaseEnd() {
+  const timerDisplay = document.querySelector('.js-timer');
+
+  if (isWorkPhase) {
+    timerDisplay.innerText = 'Get some rest!'
+    minutes = 0;
+    seconds = 5;
+  } else {
+    timerDisplay.innerText = 'Back to work!'
+    minutes = 0;
+    seconds = 10;
+  }
+
+  await delay(2000); // Pausa 2 segundos antes de cambiar de fase
+
+  isWorkPhase = !isWorkPhase;
+
+  updateScreen();
+  startCountdown(); // Comienza el siguiente periodo
 }
 
 
