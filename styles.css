@@ -1,0 +1,87 @@
+body {
+  background: #edc0bf;
+  background: linear-gradient(90deg, #edc0bf 0,#c4caef 58%);
+}
+
+.container {
+  display: inline-block;
+  border-style: solid;
+  padding: 20px 30px;
+  border-width: thin;
+  border-radius: 10px;
+  margin-top: 20px;
+  margin-left: 20px;
+
+  background: rgba(255, 255, 255, .7);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+h1 {
+  font-size: 30px;
+  font-family: Arial;
+  margin-top: auto;
+  text-align: center;
+}
+
+p {
+  font-size: 25px;
+  font-family: Arial;
+  text-align: center;
+}
+
+.buttons-container {
+  text-align: center;
+}
+
+button {
+  font-size: 14px;
+  font-family: Arial;
+  color: white;
+  padding: 5px 16px;
+  margin-left: 5px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 70px;
+  transition: all 0.2s ease;
+}
+
+.start-button {
+  background-color: green;
+  /* box-shadow: 0 -5px 4px #b7bcb8 inset; */
+}
+
+.start-button:active {
+  transform: translateY(2px);
+  /* box-shadow: 0 -2px 0 rgba(238, 210, 210, 0.793) inset; */
+}
+
+.stop-button {
+  background-color: red;
+}
+
+.reset-button {
+  background-color: rgb(98, 98, 239);
+}
+
+.reset-button:active {
+  transform: translateY(2px);
+}
+
+/*
+.rest-message {
+  color: green;
+  font-size: 25px;
+}
+
+.rest-message-visible {
+  opacity: 1;
+  color: green;
+  font-size: 25px;
+}
+
+.set-timer-invisible {
+  opacity: 0;
+}
+*/
