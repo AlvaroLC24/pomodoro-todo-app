@@ -1,6 +1,19 @@
+/* * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+} */
+
 body {
   background: #edc0bf;
   background: linear-gradient(90deg, #edc0bf 0,#c4caef 58%);
+  font-family: Arial;
+  border: 8px solid black;
+  display: flex;
+  justify-content: space-evenly;
+  min-height: 400px;
+  align-items: center;
+  /*flex-grow: 1;*/
 }
 
 .container {
@@ -24,7 +37,7 @@ h1 {
   text-align: center;
 }
 
-p {
+.timer {
   font-size: 25px;
   font-family: Arial;
   text-align: center;
@@ -85,3 +98,105 @@ button {
   opacity: 0;
 }
 */
+
+
+.container-tasks {
+  /* border: 3px solid black; */
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  /*grid-template-columns: 2fr 1fr 1fr;*/
+  /*min-height: 80px;*/
+}
+
+.tasks-title,
+.task-text,
+.task-estimation {
+  margin: 0;
+}
+
+.tasks-title-container {
+  display: flex;
+  align-items: center;
+  padding-right: 10px;
+  border-bottom: 2px solid black;
+  margin-bottom: 10px;
+}
+
+.tasks-title {
+  font-size: 24px;
+  flex: 1;
+}
+
+.hamburguer-menu {
+  cursor: pointer;
+  height: 26px;
+}
+
+.tasks {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 7px;
+}
+
+.individual-task {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border: 1px solid rgb(0, 0, 0);
+  border-radius: 5px;
+  padding: 15px 5px;
+}
+
+/* .circle-icon {
+  height: 22px;
+  margin-right: 7px;
+  cursor: pointer;
+} */
+
+.check-button {
+  margin-right: 7px;
+  cursor: pointer;
+  background-color: rgba(255, 0, 0, 0);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px, solid, black;
+  padding: 0px;
+}
+
+.task-text {
+  flex: 1;
+}
+
+.task-estimation {
+  font-size: 15px;
+  margin-right: 15px;
+}
+
+.edit-icon,
+.remove-icon {
+  cursor: pointer;
+  height: 20px;
+}
+
+.edit-icon {
+  margin-right: 5px;
+}
+
+.add-task-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  border: 1px dashed black;
+  border-radius: 5px;
+  margin-top: 12px;
+  cursor: pointer;
+}
+
+.add-icon {
+  height: 24px;
+}

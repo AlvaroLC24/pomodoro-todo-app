@@ -9,13 +9,42 @@
   <body>
     <div class="container">
       <h1>Pomodoro Timer</h1>
-      <p class="js-timer">10</p>
+      <p class="timer js-timer">10</p>
       <!--<p class="rest-message">Get some rest!</p>-->
       <audio class="js-audio" src="timer-terminer-342934.mp3"></audio>
       <div class="buttons-container">
         <button class="start-button js-start">Start</button>
       <!--<button class="stop-button js-stop">Stop</button>-->
         <button class="reset-button js-reset">Reset</button>
+      </div>
+    </div>
+
+    <div class="container-tasks">
+      <div class="tasks-title-container">
+        <p class="tasks-title">Tasks</p>
+        <img class="hamburguer-menu" src="icons/menu-outline.svg">
+      </div>
+      <div class="tasks-todo">
+        <div class="tasks">
+          <div class="individual-task">
+            <button class="check-button"></button>
+            <p class="task-text">Create Basic Pomodoro Timer</p>
+            <p class="task-estimation">3/3</p>
+            <img class="edit-icon" src="icons/pencil-outline.svg">
+            <img class="remove-icon" src="icons/trash-outline.svg">
+          </div>
+          <div class="individual-task">
+            <button class="check-button"></button>
+            <p class="task-text">Write a Short Story</p>
+            <p class="task-estimation">1/2</p>
+            <img class="edit-icon" src="icons/pencil-outline.svg">
+            <img class="remove-icon" src="icons/trash-outline.svg">
+          </div>
+        </div>
+      </div>
+      <div class="add-task-container">
+        <img class="add-icon" src="icons/add-circle-outline.svg">
+        <p class="add-task-text">Add Task</p>
       </div>
     </div>
 
