@@ -6,11 +6,18 @@ const todoList = [{
   estimatedPomodoros: 2
 }];
 
+let currentEditContext;
+
 renderTodoList();
 
+
 function addTodo() {
+  clearEditingState();
+  currentEditContext = 'add';
+
   document.querySelector('.js-add-task-container')
     .classList.add('hidden');
+
   const html = `
     <div class="pop-up-add-task">
       <div class="add-task-title">
@@ -53,15 +60,19 @@ function addTodo() {
         .innerHTML = '';
       document.querySelector('.js-add-task-container')
         .classList.remove('hidden');
+
+      clearEditingState();
     })
   
-    
+
   document.querySelector('.js-cancel-button')
     .addEventListener('click', () => {
       document.querySelector('.js-add-new-task-container')
         .innerHTML = '';
       document.querySelector('.js-add-task-container')
         .classList.remove('hidden');
+
+      clearEditingState();
     });
 }
 
@@ -79,13 +90,16 @@ function renderTodoList() {
     const {name, estimatedPomodoros} = todoObject;
 
     const html = `
-      <div class="individual-task">
+      <div class="individual-task js-individual-task-${index}">
         <button class="check-button"></button>
-        <p class="task-text">${name}</p>
-        <p class="task-estimation">${estimatedPomodoros}</p>
-        <img class="edit-icon js-edit-icon" src="icons/pencil-outline.svg">
+        <p class="task-text js-task-text-${index}">${name}</p>
+        <p class="task-estimation
+                  js-task-estimation-${index}">${estimatedPomodoros}</p>
+        <img class="edit-icon js-edit-icon" src="icons/pencil-outline.svg"
+             data-index="${index}">
         <img class="remove-icon js-remove-icon" src="icons/trash-outline.svg">
       </div>
+      <div class="js-individual-task-edit-${index}"></div>
     `;
     todoListHTML += html;
   });
@@ -101,7 +115,99 @@ function renderTodoList() {
       });
     });
   
+  
+  // Edit task
+  document.querySelectorAll('.js-edit-icon')
+    .forEach((editButton) => {
+      editButton.addEventListener('click', () => {
+
+        clearEditingState();
+
+        const index = editButton.dataset.index;
+        const name = todoList[index].name;
+        const estimatedPomodoros = todoList[index].estimatedPomodoros;
+      
+        currentEditContext = parseInt(index);
+
+        document.querySelector(`.js-individual-task-${index}`)
+          .classList.add('hidden');
+
+        const html = `
+          <div class="pop-up-add-task">
+            <div class="add-task-title">
+              <input placeholder="Task"
+                      class="new-task-input js-edit-task-input"
+                      value="${name.replace(/"/g, '&quot;')}">
+            </div>
+            <div class="add-task-estimated-pomodoro">
+              <span class="new-task-pomodoros">
+                Estimated Pomodoros:
+              </span>
+              <input class="num-estimated-pomodoros
+                      js-edit-num-estimated-pomodoros" type="number"
+                min="0" value=${estimatedPomodoros} step="1">
+            </div>
+            <div class="add-task-buttons">
+              <button class="save-button js-edit-save-button">Save</button>
+              <button class="cancel-button js-edit-cancel-button">Cancel</button>
+            </div>
+          </div>
+        `;
+
+        document.querySelector(`.js-individual-task-edit-${index}`)
+          .innerHTML = html;
+        
+        document.querySelector('.js-edit-save-button')
+          .addEventListener('click', () => {
+            const updatedName = document
+              .querySelector('.js-edit-task-input').value;
+            const updatedEstimatedPomodoros = document
+              .querySelector('.js-edit-num-estimated-pomodoros').value;
+
+            todoList[index].name = updatedName;
+            todoList[index].estimatedPomodoros = parseInt(updatedEstimatedPomodoros);
+            
+            renderTodoList();
+            
+            document.querySelector('.js-add-new-task-container')
+              .innerHTML = '';
+            document.querySelector('.js-add-task-container')
+              .classList.remove('hidden');
+            console.log(todoList);
+
+            clearEditingState();
+          })
+        
+
+        document.querySelector('.js-edit-cancel-button')
+          .addEventListener('click', () => {
+            document.querySelector(`.js-individual-task-edit-${index}`)
+              .innerHTML = '';
+            document.querySelector(`.js-individual-task-${index}`)
+              .classList.remove('hidden');
+
+            clearEditingState();
+          });
+      })
+    })
+  
 }
 
+
+function clearEditingState() {
+  if(currentEditContext === 'add') {
+    document.querySelector('.js-add-new-task-container')
+      .innerHTML = '';
+    document.querySelector('.js-add-task-container')
+      .classList.remove('hidden');
+    
+  } else if (typeof currentEditContext === 'number') {
+    document.querySelector(`.js-individual-task-edit-${currentEditContext}`)
+      .innerHTML = '';
+    document.querySelector(`.js-individual-task-${currentEditContext}`)
+      .classList.remove('hidden');
+  }
+  currentEditContext = null;
+}
 
 
