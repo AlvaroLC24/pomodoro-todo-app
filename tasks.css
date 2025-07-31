@@ -1,0 +1,173 @@
+.container-tasks {
+  /* border: 1px solid black; */
+  border-radius: 10px;
+  padding: 10px 10px;
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  /*grid-template-columns: 2fr 1fr 1fr;*/
+  /*min-height: 80px;*/
+
+  /* background: rgba(255, 255, 255, .7);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px); */
+}
+
+.tasks-title,
+.task-text,
+.task-estimation {
+  margin: 0;
+}
+
+.tasks-title-container {
+  display: flex;
+  align-items: center;
+  padding-right: 10px;
+  border-bottom: 2px solid black;
+  margin-bottom: 10px;
+}
+
+.tasks-title {
+  font-size: 18px;
+  flex: 1;
+}
+
+.hamburguer-menu {
+  cursor: pointer;
+  height: 26px;
+}
+
+.tasks {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+}
+
+.individual-task {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border: 1px solid rgb(0, 0, 0);
+  border-radius: 15px;
+  padding: 15px 5px;
+  background-color: #ffffff;
+}
+
+/* .circle-icon {
+  height: 22px;
+  margin-right: 7px;
+  cursor: pointer;
+} */
+
+.check-button {
+  margin-right: 7px;
+  cursor: pointer;
+  background-color: rgba(255, 0, 0, 0);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px, solid, black;
+  padding: 0px;
+}
+
+.task-text {
+  flex: 1;
+  font-size: 14px;
+}
+
+.task-estimation {
+  font-size: 15px;
+  margin-right: 15px;
+}
+
+.edit-icon,
+.remove-icon {
+  cursor: pointer;
+  height: 20px;
+}
+
+.edit-icon {
+  margin-right: 5px;
+}
+
+.add-task-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  border: 1px dashed black;
+  border-radius: 15px;
+  margin-top: 10px;
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.add-icon {
+  height: 24px;
+}
+
+
+
+.pop-up-add-task {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 378px;
+  border: 1px solid black;
+  border-radius: 5px;
+  gap: 20px;
+  margin-top: 12px;
+  padding: 10px 10px;
+}
+
+
+.add-task-title {
+  display: flex;
+  align-items: center;
+}
+
+.new-task-input {
+  flex: 1;
+  height: 30px;
+}
+
+.add-task-estimated-pomodoro {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+}
+
+.new-task-pomodoros {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.num-estimated-pomodoros {
+  width: 40px;
+}
+
+.add-task-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  align-items: center;
+}
+
+.save-button {
+  background-color: blue;
+  font-size: 10px;
+  padding: 6px 20px;
+}
+
+.cancel-button {
+  background-color: #555555;
+  font-size: 10px;
+  padding: 6px 15px;
+}
+
+.hidden {
+  display: none;
+}

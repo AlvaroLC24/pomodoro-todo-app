@@ -1,11 +1,45 @@
-let minutes = 0;
-let seconds = 10;
+let minutes;
+let seconds;
 let isCounting = false;
 let intervalId;
 let isWorkPhase = true;
 //let num = Number(10).toFixed(2);
 
 // console.log(new Date(minutes=2, seconds=0));
+
+const modes = {
+  pomodoro: {
+    minutes: 0,
+    seconds: 10
+  },
+  shortBreak: {
+    minutes: 0,
+    seconds: 5
+  },
+  longBreak: {
+    minutes: 0,
+    seconds: 15
+  }
+}
+
+const pomodoroButton = document.querySelector('.js-pomodoro-button');
+const shortBreakButton = document.querySelector('.js-short-break-button');
+const longBreakButton = document.querySelector('.js-long-break-button');
+const timerElement = document.querySelector('.js-timer');
+
+let currentMode = 'pomodoro';
+let timeLeft = modes[currentMode];
+console.log(timeLeft.minutes);
+
+// minutes = timeLeft.minutes;
+// seconds = timeLeft.seconds;
+switchMode(currentMode);
+
+let timer = null;
+let pomodoroCount = 0;
+const pomodorosBeforeLongBreak = 4;
+
+
 
 
 function startCountdown() {
@@ -27,7 +61,7 @@ function startCountdown() {
         console.log('¡Cuenta finalizada!');
         isCounting = false;
 
-        handlePhaseEnd(); // Maneja lo que pasa cuando termina la fase
+        handlePhaseEnd2(); // Maneja lo que pasa cuando termina la fase
         return;
       } else {
         minutes--;
@@ -75,6 +109,121 @@ function updateScreen() {
   //   }, 2000);
   // }
 }
+
+async function handlePhaseEnd2() {
+
+  // await delay(2000); // Pausa 2 segundos antes de cambiar de fase
+
+  const timerDisplay = document.querySelector('.js-timer');
+  const message = document.querySelector('.js-timer-message');
+
+  if (currentMode === 'pomodoro') {
+    pomodoroCount++;
+    if (pomodoroCount === pomodorosBeforeLongBreak) {
+      pomodoroCount = 0;
+      switchMode('longBreak');
+      showPhaseMessage('Get a long break!', 'longBreak');
+    } else {
+      switchMode('shortBreak');
+      showPhaseMessage('Get a short break!', 'shortBreak');
+    }
+    // timerDisplay.classList.add('rest-message');
+    // timerDisplay.innerText = 'Get some rest!'
+    // message.innerText = 'Get some rest!';
+    // message.classList.remove('hidden');
+    // showPhaseMessage('Get a short break!', 'shortBreak');
+    // minutes = 0;
+    // seconds = 5;
+  } else {
+    switchMode('pomodoro');
+    // timerDisplay.classList.add('work-message');
+    // timerDisplay.innerText = 'Back to work!'
+    // message.innerText = 'Back to work!';
+    // message.classList.remove('hidden');
+    showPhaseMessage('Back to work!', 'pomodoro');
+
+    // minutes = 0;
+    // seconds = 10;
+  }
+  updateScreen();
+  await delay(2000); // Pausa 2 segundos antes de cambiar de fase
+  // timerDisplay.classList.remove('work-message','rest-message');
+  message.classList.add('message-hidden');
+
+  // if (currentMode === 'pomodoro') {
+  //   if (pomodoroCount === 0) {
+  //     switchMode('longBreak');
+  //   } else {
+  //     switchMode('shortBreak');
+  //   }
+  // } else {
+  //   switchMode('pomodoro');
+  // }
+  // isWorkPhase = !isWorkPhase;
+  clearInterval(intervalId);
+  // updateScreen();
+  startCountdown(); // Comienza el siguiente periodo
+}
+
+
+function showPhaseMessage(msg, mode) {
+  const message = document.querySelector('.js-timer-message');
+  message.innerText = msg;
+  message.className = `js-timer-message timer-message ${mode}`;
+  message.classList.remove('message-hidden');
+}
+
+function switchMode(mode) {
+  currentMode = mode;
+  timeLeft = modes[currentMode];
+  minutes = timeLeft.minutes;
+  seconds = timeLeft.seconds;
+
+  clearInterval(intervalId);
+  
+  pomodoroButton.classList.remove('pomodoro-button-selected');
+  shortBreakButton.classList.remove('short-break-button-selected');
+  longBreakButton.classList.remove('long-break-button-selected');
+
+  timerElement.classList
+    .remove('pomodoro-color', 'short-break-color', 'long-break-color');
+
+  if (mode === 'pomodoro') {
+    pomodoroButton.classList.add('pomodoro-button-selected');
+    timerElement.classList.add('pomodoro-color')
+  } else if (mode === 'shortBreak') {
+    shortBreakButton.classList.add('short-break-button-selected');
+    timerElement.classList.add('short-break-color');
+  } else if (mode === 'longBreak') {
+    longBreakButton.classList.add('long-break-button-selected');
+    timerElement.classList.add('long-break-color');
+  }
+}
+
+function resetStartPauseButton() {
+  const toggleButton = document.querySelector('.js-start');
+  toggleButton.innerHTML = 'Start';
+  toggleButton.classList.remove('stop-button');
+}
+
+pomodoroButton.addEventListener('click', () => {
+  switchMode('pomodoro')
+  resetStartPauseButton();
+  updateScreen();
+})
+
+shortBreakButton.addEventListener('click', () => {
+  switchMode('shortBreak');
+  resetStartPauseButton();
+  updateScreen();
+})
+
+longBreakButton.addEventListener('click', () => {
+  switchMode('longBreak');
+  resetStartPauseButton();
+  updateScreen();
+})
+
 
 
 async function handlePhaseEnd() {
@@ -133,17 +282,15 @@ document.querySelector('.js-start')
 //       stopCountdown()
 //     })
 // }
-const toggleButton = document.querySelector('.js-start');
 
 document.querySelector('.js-reset')
   .addEventListener('click', () => {
     stopCountdown();
-    minutes = 0;
-    seconds = 10;
-    if (document.querySelector('.js-start').innerText === 'Pause') {
-      toggleButton.innerHTML = 'Start';
-      toggleButton.classList.remove('stop-button');
-    }
+    timeLeft = modes[currentMode];
+    minutes = timeLeft.minutes;
+    seconds = timeLeft.seconds;
+
+    resetStartPauseButton();
     updateScreen();
   })
 

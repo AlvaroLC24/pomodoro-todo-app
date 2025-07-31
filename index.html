@@ -5,48 +5,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ToDo Timer</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="tasks.css">
   </head>
   <body>
-    <div class="container">
-      <h1>Pomodoro Timer</h1>
-      <p class="timer js-timer">10</p>
-      <!--<p class="rest-message">Get some rest!</p>-->
-      <audio class="js-audio" src="timer-terminer-342934.mp3"></audio>
-      <div class="buttons-container">
-        <button class="start-button js-start">Start</button>
-      <!--<button class="stop-button js-stop">Stop</button>-->
-        <button class="reset-button js-reset">Reset</button>
-      </div>
-    </div>
-
-    <div class="container-tasks">
-      <div class="tasks-title-container">
-        <p class="tasks-title">Tasks</p>
-        <img class="hamburguer-menu" src="icons/menu-outline.svg">
-      </div>
-      <div class="tasks-todo">
-        <div class="tasks js-tasks">
-          <!-- <div class="individual-task">
-            <button class="check-button"></button>
-            <p class="task-text">Create Basic Pomodoro Timer</p>
-            <p class="task-estimation">3/3</p>
-            <img class="edit-icon" src="icons/pencil-outline.svg">
-            <img class="remove-icon" src="icons/trash-outline.svg">
-          </div>
-          <div class="individual-task">
-            <button class="check-button"></button>
-            <p class="task-text">Write a Short Story</p>
-            <p class="task-estimation">1/2</p>
-            <img class="edit-icon" src="icons/pencil-outline.svg">
-            <img class="remove-icon" src="icons/trash-outline.svg">
-          </div> -->
+    <h1>Pomodoro Timer</h1>
+    <div class="timer-and-tasks">
+      <div class="timer-container">
+        <div class="modes-buttons">
+          <button class="pomodoro-button js-pomodoro-button">Pomodoro</button>
+          <button class="short-break-button js-short-break-button">Short Break</button>
+          <button class="long-break-button js-long-break-button">Long Break</button>
+        </div>
+        <div class="timer-display">
+          <p class="timer js-timer">10</p>
+          <p class="timer-message message-hidden js-timer-message">Back to work!</p>
+          <!--<p class="rest-message">Get some rest!</p>-->
+          <audio class="js-audio" src="timer-terminer-342934.mp3"></audio>
+        </div>
+        <div class="buttons-container">
+          <button class="start-button js-start">Start</button>
+        <!--<button class="stop-button js-stop">Stop</button>-->
+          <button class="reset-button js-reset">Reset</button>
         </div>
       </div>
-      <div class="add-task-container js-add-task-container">
-        <img class="add-icon" src="icons/add-circle-outline.svg">
-        <p class="add-task-text">Add Task</p>
+
+      <div class="container-tasks">
+        <div class="tasks-title-container">
+          <p class="tasks-title">Tasks</p>
+          <img class="hamburguer-menu" src="icons/menu-outline.svg">
+        </div>
+        <div class="tasks-todo">
+          <div class="tasks js-tasks">
+            <!-- <div class="individual-task">
+              <button class="check-button"></button>
+              <p class="task-text">Create Basic Pomodoro Timer</p>
+              <p class="task-estimation">3/3</p>
+              <img class="edit-icon" src="icons/pencil-outline.svg">
+              <img class="remove-icon" src="icons/trash-outline.svg">
+            </div>
+            <div class="individual-task">
+              <button class="check-button"></button>
+              <p class="task-text">Write a Short Story</p>
+              <p class="task-estimation">1/2</p>
+              <img class="edit-icon" src="icons/pencil-outline.svg">
+              <img class="remove-icon" src="icons/trash-outline.svg">
+            </div> -->
+          </div>
+        </div>
+        <div class="add-task-container js-add-task-container">
+          <img class="add-icon" src="icons/add-circle-outline.svg">
+          <p class="add-task-text">Add Task</p>
+        </div>
+        <div class="js-add-new-task-container"></div>
       </div>
-      <div class="js-add-new-task-container"></div>
     </div>
 
     <script src="script.js"></script>
