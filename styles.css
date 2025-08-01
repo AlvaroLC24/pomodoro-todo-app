@@ -19,7 +19,7 @@ h1 {
   /* background: #edc0bf; */
   /* background: linear-gradient(90deg, #edc0bf 0,#c4caef 58%); */
   font-family: Arial;
-  border: 2px solid black;
+  /* border: 2px solid black; */
   display: flex;
   justify-content: space-evenly;
   min-height: 400px;

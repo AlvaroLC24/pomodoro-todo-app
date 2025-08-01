@@ -1,3 +1,8 @@
+import {
+  selectedTaskIndex,
+  updateCompletedPomodoros
+} from "./tasks.js";
+
 let minutes;
 let seconds;
 let isCounting = false;
@@ -29,7 +34,7 @@ const timerElement = document.querySelector('.js-timer');
 
 let currentMode = 'pomodoro';
 let timeLeft = modes[currentMode];
-console.log(timeLeft.minutes);
+// console.log(timeLeft.minutes);
 
 // minutes = timeLeft.minutes;
 // seconds = timeLeft.seconds;
@@ -118,6 +123,7 @@ async function handlePhaseEnd2() {
   const message = document.querySelector('.js-timer-message');
 
   if (currentMode === 'pomodoro') {
+    updateCompletedPomodoros(selectedTaskIndex);
     pomodoroCount++;
     if (pomodoroCount === pomodorosBeforeLongBreak) {
       pomodoroCount = 0;

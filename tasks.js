@@ -1,12 +1,19 @@
 const todoList = [{
   name: 'Create Basic Pomodoro Timer',
-  estimatedPomodoros: 3
+  estimatedPomodoros: 3,
+  completedPomodoros: 0,
+  done: false
 }, {
   name: 'Write a Short Story',
-  estimatedPomodoros: 2
+  estimatedPomodoros: 2,
+  completedPomodoros: 0,
+  done: false
 }];
 
 let currentEditContext;
+
+export let selectedTaskIndex;
+let totalCompletedPomodoros = 0;
 
 renderTodoList();
 
@@ -51,7 +58,9 @@ function addTodo() {
 
       todoList.push({
         name,
-        estimatedPomodoros
+        estimatedPomodoros,
+        completedPomodoros: 0,
+        done: false
       });
       
       renderTodoList();
@@ -87,17 +96,24 @@ function renderTodoList() {
   let todoListHTML = '';
 
   todoList.forEach((todoObject, index) => {
-    const {name, estimatedPomodoros} = todoObject;
-
+    const {name, estimatedPomodoros, completedPomodoros, done} = todoObject;
+    // const checkClass = todoObject.done ? 'check-button-checked' : '';
     const html = `
-      <div class="individual-task js-individual-task-${index}">
-        <button class="check-button"></button>
+      <div class="individual-task js-individual-task js-individual-task-${index}">
+        <button class="check-button js-check-button-${index}">
+          ${todoObject.done ? '✔' : ''}
+        </button>
         <p class="task-text js-task-text-${index}">${name}</p>
         <p class="task-estimation
-                  js-task-estimation-${index}">${estimatedPomodoros}</p>
-        <img class="edit-icon js-edit-icon" src="icons/pencil-outline.svg"
-             data-index="${index}">
-        <img class="remove-icon js-remove-icon" src="icons/trash-outline.svg">
+                  js-task-estimation-${index}">${completedPomodoros}/${estimatedPomodoros}</p>
+        <img class="tomato-icon" src="icons/tomato-svgrepo-com.svg">
+        <button class="edit-button">
+          <img class="edit-icon js-edit-icon" src="icons/pencil.svg"
+              data-index="${index}">
+        </button>
+        <button class="remove-button">
+          <img class="remove-icon js-remove-icon" src="icons/trash-outline.svg">
+        </button>
       </div>
       <div class="js-individual-task-edit-${index}"></div>
     `;
@@ -106,10 +122,34 @@ function renderTodoList() {
 
   document.querySelector('.js-tasks').innerHTML = todoListHTML;
 
+  if (selectedTaskIndex !== null) {
+    const selectedTask = document.querySelector(`.js-individual-task-${selectedTaskIndex}`);
+    if (selectedTask) {
+      selectedTask.classList.add('task-selected');
+    }
+  }
+  document.querySelectorAll('.js-individual-task')
+    .forEach((taskElement, index) => {
+      taskElement.addEventListener('click', () => {
+        document.querySelectorAll('.js-individual-task')
+          .forEach(t => {
+            t.classList.remove('task-selected');
+          });
+        taskElement.classList.add('task-selected');
+        selectedTaskIndex = index;
+      });
+    });
+
   // Remove task
   document.querySelectorAll('.js-remove-icon')
     .forEach((removeButton, index) => {
-      removeButton.addEventListener('click', () => {
+      removeButton.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (selectedTaskIndex === index) {
+          selectedTaskIndex = null;
+        } else if (selectedTaskIndex > index) {
+          selectedTaskIndex--;
+        }
         todoList.splice(index, 1);
         renderTodoList();
       });
@@ -119,13 +159,15 @@ function renderTodoList() {
   // Edit task
   document.querySelectorAll('.js-edit-icon')
     .forEach((editButton) => {
-      editButton.addEventListener('click', () => {
+      editButton.addEventListener('click', (e) => {
+        e.stopPropagation();
 
         clearEditingState();
 
         const index = editButton.dataset.index;
         const name = todoList[index].name;
         const estimatedPomodoros = todoList[index].estimatedPomodoros;
+        const completedPomodoros = todoList[index].completedPomodoros;
       
         currentEditContext = parseInt(index);
 
@@ -145,7 +187,7 @@ function renderTodoList() {
               </span>
               <input class="num-estimated-pomodoros
                       js-edit-num-estimated-pomodoros" type="number"
-                min="0" value=${estimatedPomodoros} step="1">
+                min="${completedPomodoros}" value=${estimatedPomodoros} step="1">
             </div>
             <div class="add-task-buttons">
               <button class="save-button js-edit-save-button">Save</button>
@@ -163,9 +205,28 @@ function renderTodoList() {
               .querySelector('.js-edit-task-input').value;
             const updatedEstimatedPomodoros = document
               .querySelector('.js-edit-num-estimated-pomodoros').value;
+            
+
+            // Alertas cuando el número estimado editaro no puede ser
+            const completedPomodoros = todoList[index].completedPomodoros;
+
+            if (updatedEstimatedPomodoros < 0) {
+              alert('Estimated pomodoros cannot be negative.');
+              return;
+            }
+            
+            if (updatedEstimatedPomodoros < completedPomodoros) {
+              alert(`Estimated pomodoros cannot be less than completed ones (${completedPomodoros}).`);
+              return;
+            }
 
             todoList[index].name = updatedName;
             todoList[index].estimatedPomodoros = parseInt(updatedEstimatedPomodoros);
+            if (todoList[index].estimatedPomodoros > todoList[index].completedPomodoros) {
+              todoList[index].done = false;
+            } else {
+              todoList[index].done = true;
+            }
             
             renderTodoList();
             
@@ -211,3 +272,30 @@ function clearEditingState() {
 }
 
 
+export function updateCompletedPomodoros(selectedTaskIndex) {
+  const taskObject = todoList[selectedTaskIndex];
+  if (selectedTaskIndex !== null) {
+    // console.log('Selected');
+    // console.log(selectedTaskIndex);
+    const selectedTask = document.querySelector(`.js-individual-task-${selectedTaskIndex}`);
+    if (selectedTask) {
+      if (taskObject.completedPomodoros < taskObject.estimatedPomodoros) {
+        taskObject.completedPomodoros++;
+      }
+      if (taskObject.completedPomodoros >= taskObject.estimatedPomodoros) {
+        taskObject.done = true;
+        // Poner el tick en el círculo de la tarea -> arriba en el html
+        // const checkButton = document.querySelector(`.js-check-button-${selectedTaskIndex}`);
+        // checkButton.innerHTML = '✔';
+        // checkButton.classList.add('check-button-checked');
+      }
+    }
+  }
+  totalCompletedPomodoros++;
+  // console.log(taskObject);
+  // console.log(typeof taskObject.completedPomodoros);
+  // console.log(typeof taskObject.estimatedPomodoros);
+  // console.log(taskObject.completedPomodoros);
+  console.log(totalCompletedPomodoros);
+  renderTodoList();
+}
