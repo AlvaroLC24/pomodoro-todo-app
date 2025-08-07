@@ -31,6 +31,7 @@ const pomodoroButton = document.querySelector('.js-pomodoro-button');
 const shortBreakButton = document.querySelector('.js-short-break-button');
 const longBreakButton = document.querySelector('.js-long-break-button');
 const timerElement = document.querySelector('.js-timer');
+const progressBar = document.querySelector('.js-progress-bar');
 
 let currentMode = 'pomodoro';
 let timeLeft = modes[currentMode];
@@ -43,8 +44,6 @@ switchMode(currentMode);
 let timer = null;
 let pomodoroCount = 0;
 const pomodorosBeforeLongBreak = 4;
-
-
 
 
 function startCountdown() {
@@ -73,6 +72,7 @@ function startCountdown() {
         seconds = 59;
       }
     } else {
+      const startTime = Date.now()
       seconds--;
     }
 
@@ -91,10 +91,29 @@ function delay(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+
 function updateScreen() {
   document.querySelector('.js-timer')
     .innerText = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   
+  // Progress bar
+
+  let totalSeconds = (modes[currentMode].minutes * 60) + modes[currentMode].seconds;
+  let secondsToGo = (minutes * 60) + seconds;
+  let secondsLeft = totalSeconds - secondsToGo;
+
+  let secondsPercent = (secondsLeft / totalSeconds) * 100;
+
+  // const progressBarHTML = `
+  //   <div class="progress-bar" style="width: ${secondsPercent}%;"></div>
+  // `;
+
+  // document.querySelector('.js-progress-bar-container')
+  //   .innerHTML = progressBarHTML;
+
+  const progressBar = document.querySelector('.js-progress-bar');
+  progressBar.style.width = `${secondsPercent}%`;
+
   // const timerDisplay = document.querySelector('.js-timer');
   // // const timerMessage = document.querySelector('.rest-message')
   // if (minutes === 0 && seconds === 0) {
@@ -193,16 +212,22 @@ function switchMode(mode) {
 
   timerElement.classList
     .remove('pomodoro-color', 'short-break-color', 'long-break-color');
+  progressBar.classList
+    .remove('pomodoro-color-bar', 'short-break-color-bar', 'long-break-color-bar');
+  
 
   if (mode === 'pomodoro') {
     pomodoroButton.classList.add('pomodoro-button-selected');
-    timerElement.classList.add('pomodoro-color')
+    timerElement.classList.add('pomodoro-color');
+    progressBar.classList.add('pomodoro-color-bar');
   } else if (mode === 'shortBreak') {
     shortBreakButton.classList.add('short-break-button-selected');
     timerElement.classList.add('short-break-color');
+    progressBar.classList.add('short-break-color-bar');
   } else if (mode === 'longBreak') {
     longBreakButton.classList.add('long-break-button-selected');
     timerElement.classList.add('long-break-color');
+    progressBar.classList.add('long-break-color-bar');
   }
 }
 

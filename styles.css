@@ -38,6 +38,7 @@ h1 {
   text-align: center;
   border-style: solid;
   padding: 30px 75px;
+  padding-top: 6px;
   border-width: 4px;
   border-color: #e7e7e7;
   border-radius: 10px;
@@ -97,7 +98,7 @@ h1 {
   text-align: center;
   /* border: 1px solid blue; */
   position: relative;
-  width: 100%;
+  width: 130%;
 }
 
 .timer {
@@ -165,6 +166,19 @@ h1 {
   color: #457ca3;
   color: #ca698b;
 }
+
+.pomodoro-color-bar {
+  background-color: #709fb0;
+}
+
+.short-break-color-bar {
+  background-color: #cc8598;
+}
+
+.long-break-color-bar {
+  background-color: #ca698b;
+}
+
 
 .buttons-container {
   text-align: center;
@@ -250,3 +264,27 @@ button {
   opacity: 0;
 }
 */
+
+.progress-bar-container {
+  height: 2px;
+  width: 135%;
+  background-color: lightgray;
+  background-color: rgba(225, 225, 225, 0.8);
+
+  border: 1px solid rgba(215, 215, 215, 0.3);
+  border-radius: 2px;
+  overflow: hidden;
+  margin: 0px;
+  margin-bottom: 15px;
+  padding: 0px;
+  /* position: absolute;
+  top: 10px; */
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  border-radius: 2px;
+  /* background-color: #709fb0; */
+  transition: width 1s linear;
+}

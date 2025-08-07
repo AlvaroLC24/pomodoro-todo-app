@@ -1,14 +1,16 @@
-const todoList = [{
-  name: 'Create Basic Pomodoro Timer',
-  estimatedPomodoros: 3,
-  completedPomodoros: 0,
-  done: false
-}, {
-  name: 'Write a Short Story',
-  estimatedPomodoros: 2,
-  completedPomodoros: 0,
-  done: false
-}];
+// const todoList = [{
+//   name: 'Create Basic Pomodoro Timer',
+//   estimatedPomodoros: 3,
+//   completedPomodoros: 0,
+//   done: false
+// }, {
+//   name: 'Write a Short Story',
+//   estimatedPomodoros: 2,
+//   completedPomodoros: 0,
+//   done: false
+// }];
+
+export const todoList = JSON.parse(localStorage.getItem('todoList')) || [];
 
 let currentEditContext;
 
@@ -17,6 +19,9 @@ let totalCompletedPomodoros = 0;
 
 renderTodoList();
 
+function saveToStorage() {
+  localStorage.setItem('todoList', JSON.stringify(todoList));
+}
 
 function addTodo() {
   clearEditingState();
@@ -63,6 +68,7 @@ function addTodo() {
         done: false
       });
       
+      saveToStorage();
       renderTodoList();
       
       document.querySelector('.js-add-new-task-container')
@@ -131,12 +137,17 @@ function renderTodoList() {
   document.querySelectorAll('.js-individual-task')
     .forEach((taskElement, index) => {
       taskElement.addEventListener('click', () => {
-        document.querySelectorAll('.js-individual-task')
-          .forEach(t => {
-            t.classList.remove('task-selected');
-          });
-        taskElement.classList.add('task-selected');
-        selectedTaskIndex = index;
+        if (selectedTaskIndex === index) {
+          taskElement.classList.remove('task-selected');
+          selectedTaskIndex = null;
+        } else {
+          document.querySelectorAll('.js-individual-task')
+            .forEach(t => {
+              t.classList.remove('task-selected');
+            });
+          taskElement.classList.add('task-selected');
+          selectedTaskIndex = index;
+        }
       });
     });
 
@@ -151,6 +162,7 @@ function renderTodoList() {
           selectedTaskIndex--;
         }
         todoList.splice(index, 1);
+        saveToStorage();
         renderTodoList();
       });
     });
@@ -228,6 +240,7 @@ function renderTodoList() {
               todoList[index].done = true;
             }
             
+            saveToStorage();
             renderTodoList();
             
             document.querySelector('.js-add-new-task-container')
