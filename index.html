@@ -4,68 +4,82 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ToDo Timer</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="tasks.css">
   </head>
   <body>
-    <h1>Pomodoro Timer</h1>
+    <h1 class="title">Pomodoro Timer</h1>
     <div class="timer-and-tasks">
-      <div class="timer-container">
-        <div class="progress-bar-container js-progress-bar-container">
-          <div class="progress-bar js-progress-bar"></div>
-        </div>
-        <div class="modes-buttons">
-          <button class="pomodoro-button js-pomodoro-button">Pomodoro</button>
-          <button class="short-break-button js-short-break-button">Short Break</button>
-          <button class="long-break-button js-long-break-button">Long Break</button>
-        </div>
-        <div class="timer-display">
-          <p class="timer js-timer"></p>
-          <p class="timer-message message-hidden js-timer-message">Back to work!</p>
-          <!--<p class="rest-message">Get some rest!</p>-->
-          <audio class="js-audio" src="timer-terminer-342934.mp3"></audio>
-        </div>
-        <div class="buttons-container">
-          <button class="start-button js-start">Start</button>
-        <!--<button class="stop-button js-stop">Stop</button>-->
-          <button class="reset-button js-reset">Reset</button>
-        </div>
-      </div>
-
-      <div class="container-tasks">
-        <div class="tasks-title-container">
-          <p class="tasks-title">Tasks</p>
-          <button class="hamburguer-menu-button">
-            <img class="hamburguer-menu" src="icons/menu-outline.svg">
-          </button>
-        </div>
-        <div class="tasks-todo">
-          <div class="tasks js-tasks">
-            <!-- <div class="individual-task">
-              <button class="check-button"></button>
-              <p class="task-text">Create Basic Pomodoro Timer</p>
-              <p class="task-estimation">3/3</p>
-              <img class="edit-icon" src="icons/pencil-outline.svg">
-              <img class="remove-icon" src="icons/trash-outline.svg">
-            </div>
-            <div class="individual-task">
-              <button class="check-button"></button>
-              <p class="task-text">Write a Short Story</p>
-              <p class="task-estimation">1/2</p>
-              <img class="edit-icon" src="icons/pencil-outline.svg">
-              <img class="remove-icon" src="icons/trash-outline.svg">
-            </div> -->
+      <div class="container1">
+        <div class="timer-container">
+          <div class="progress-bar-container js-progress-bar-container">
+            <div class="progress-bar js-progress-bar"></div>
+          </div>
+          <div class="modes-buttons">
+            <button class="pomodoro-button js-pomodoro-button">Pomodoro</button>
+            <button class="short-break-button js-short-break-button">Short Break</button>
+            <button class="long-break-button js-long-break-button">Long Break</button>
+          </div>
+          <div class="timer-display">
+            <p class="timer js-timer"></p>
+            <p class="timer-message message-hidden js-timer-message">Back to work!</p>
+            <!--<p class="rest-message">Get some rest!</p>-->
+            <audio class="js-audio" src="timer-terminer-342934.mp3"></audio>
+          </div>
+          <div class="buttons-container">
+            <button class="start-button js-start">Start</button>
+          <!--<button class="stop-button js-stop">Stop</button>-->
+            <button class="reset-button js-reset">Reset</button>
           </div>
         </div>
-        <div class="add-task-container js-add-task-container">
-          <img class="add-icon" src="icons/add-circle-outline.svg">
-          <p class="add-task-text">Add Task</p>
+      </div>
+
+      <div class="container2">
+        <div>
+          <div class="scroll-content">
+            <div class="container-tasks">
+              <div class="tasks-title-container">
+                <p class="tasks-title">Tasks</p>
+                <button class="hamburguer-menu-button">
+                  <img class="hamburguer-menu" src="icons/menu-outline.svg">
+                </button>
+              </div>
+              <div class="tasks-todo">
+                <div class="tasks js-tasks">
+                  <!-- <div class="individual-task">
+                    <button class="check-button"></button>
+                    <p class="task-text">Create Basic Pomodoro Timer</p>
+                    <p class="task-estimation">3/3</p>
+                    <img class="edit-icon" src="icons/pencil-outline.svg">
+                    <img class="remove-icon" src="icons/trash-outline.svg">
+                  </div>
+                  <div class="individual-task">
+                    <button class="check-button"></button>
+                    <p class="task-text">Write a Short Story</p>
+                    <p class="task-estimation">1/2</p>
+                    <img class="edit-icon" src="icons/pencil-outline.svg">
+                    <img class="remove-icon" src="icons/trash-outline.svg">
+                  </div> -->
+                </div>
+              </div>
+              <div class="add-task-container js-add-task-container">
+                <img class="add-icon" src="icons/add-circle-outline.svg">
+                <p class="add-task-text">Add Task</p>
+              </div>
+              <div class="js-add-new-task-container"></div>
+            </div>
+          </div>
         </div>
-        <div class="js-add-new-task-container"></div>
       </div>
     </div>
-
+    
     <script src="script.js" type="module"></script>
     <script src="tasks.js" type="module"></script>
+    <script src="drag.js" type="module"></script>
   </body>
 </html>

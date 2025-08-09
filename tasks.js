@@ -15,7 +15,7 @@ export const todoList = JSON.parse(localStorage.getItem('todoList')) || [];
 let currentEditContext;
 
 export let selectedTaskIndex;
-let totalCompletedPomodoros = 0;
+let totalCompletedPomodoros = JSON.parse(localStorage.getItem('totalCompletedPomodoros')) || 0;
 
 renderTodoList();
 
@@ -105,7 +105,8 @@ function renderTodoList() {
     const {name, estimatedPomodoros, completedPomodoros, done} = todoObject;
     // const checkClass = todoObject.done ? 'check-button-checked' : '';
     const html = `
-      <div class="individual-task js-individual-task js-individual-task-${index}">
+      <div class="individual-task js-individual-task js-individual-task-${index}"
+        draggable="true">
         <button class="check-button js-check-button-${index}">
           ${todoObject.done ? '✔' : ''}
         </button>
@@ -113,12 +114,12 @@ function renderTodoList() {
         <p class="task-estimation
                   js-task-estimation-${index}">${completedPomodoros}/${estimatedPomodoros}</p>
         <img class="tomato-icon" src="icons/tomato-svgrepo-com.svg">
-        <button class="edit-button">
-          <img class="edit-icon js-edit-icon" src="icons/pencil.svg"
-              data-index="${index}">
+        <button class="edit-button js-edit-button"
+          data-index="${index}">
+          <img class="edit-icon" src="icons/pencil.svg">
         </button>
-        <button class="remove-button">
-          <img class="remove-icon js-remove-icon" src="icons/trash-outline.svg">
+        <button class="remove-button js-remove-button">
+          <img class="remove-icon" src="icons/trash-outline.svg">
         </button>
       </div>
       <div class="js-individual-task-edit-${index}"></div>
@@ -152,7 +153,7 @@ function renderTodoList() {
     });
 
   // Remove task
-  document.querySelectorAll('.js-remove-icon')
+  document.querySelectorAll('.js-remove-button')
     .forEach((removeButton, index) => {
       removeButton.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -169,7 +170,7 @@ function renderTodoList() {
   
   
   // Edit task
-  document.querySelectorAll('.js-edit-icon')
+  document.querySelectorAll('.js-edit-button')
     .forEach((editButton) => {
       editButton.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -310,5 +311,7 @@ export function updateCompletedPomodoros(selectedTaskIndex) {
   // console.log(typeof taskObject.estimatedPomodoros);
   // console.log(taskObject.completedPomodoros);
   console.log(totalCompletedPomodoros);
+  saveToStorage();
+  localStorage.setItem('totalCompletedPomodoros', JSON.stringify(totalCompletedPomodoros));
   renderTodoList();
 }

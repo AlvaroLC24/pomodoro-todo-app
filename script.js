@@ -32,6 +32,7 @@ const shortBreakButton = document.querySelector('.js-short-break-button');
 const longBreakButton = document.querySelector('.js-long-break-button');
 const timerElement = document.querySelector('.js-timer');
 const progressBar = document.querySelector('.js-progress-bar');
+const message = document.querySelector('.js-timer-message');
 
 let currentMode = 'pomodoro';
 let timeLeft = modes[currentMode];
@@ -44,6 +45,9 @@ switchMode(currentMode);
 let timer = null;
 let pomodoroCount = 0;
 const pomodorosBeforeLongBreak = 4;
+
+// timeout for delay 2 seconds between phases
+let delayTimeoutId;
 
 
 function startCountdown() {
@@ -85,10 +89,23 @@ function stopCountdown() {
   clearInterval(intervalId);
   intervalId = null;
   isCounting = false;
+
+  if (delayTimeoutId) {
+    cancelDelay();
+  }
 }
 
+// Función para esperar dos segundos entre fases
 function delay(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise((resolve, reject) => {
+    delayTimeoutId = setTimeout(resolve, ms);
+  });
+}
+
+// Función para cancelar el timeOut. Se usa al pulsar el botón Pause
+// en mitad de esos dos segundos.
+function cancelDelay() {
+  clearTimeout(delayTimeoutId);
 }
 
 
@@ -139,7 +156,6 @@ async function handlePhaseEnd2() {
   // await delay(2000); // Pausa 2 segundos antes de cambiar de fase
 
   const timerDisplay = document.querySelector('.js-timer');
-  const message = document.querySelector('.js-timer-message');
 
   if (currentMode === 'pomodoro') {
     updateCompletedPomodoros(selectedTaskIndex);
@@ -170,10 +186,25 @@ async function handlePhaseEnd2() {
     // minutes = 0;
     // seconds = 10;
   }
+
   updateScreen();
-  await delay(2000); // Pausa 2 segundos antes de cambiar de fase
+
+  // Se maneja la espera entre dos segundos entre fases
+  try {
+    await delay(2000);
+    message.classList.add('message-hidden');
+    clearInterval(intervalId);
+    startCountdown();
+  } catch (err) {
+    console.log("Two seconds wait between phases canceled. Continue when you're ready!")
+  }
+
+
+
+
+  // await delay(2000); // Pausa 2 segundos antes de cambiar de fase
   // timerDisplay.classList.remove('work-message','rest-message');
-  message.classList.add('message-hidden');
+  // // message.classList.add('message-hidden');
 
   // if (currentMode === 'pomodoro') {
   //   if (pomodoroCount === 0) {
@@ -185,9 +216,9 @@ async function handlePhaseEnd2() {
   //   switchMode('pomodoro');
   // }
   // isWorkPhase = !isWorkPhase;
-  clearInterval(intervalId);
+  // // clearInterval(intervalId);
   // updateScreen();
-  startCountdown(); // Comienza el siguiente periodo
+  // // startCountdown(); // Comienza el siguiente periodo
 }
 
 
@@ -286,6 +317,7 @@ function start() {
     startCountdown();
     startButton.innerHTML = 'Pause';
     startButton.classList.add('stop-button')
+    message.classList.add('message-hidden');
   } else {
     stopCountdown();
     startButton.innerHTML = 'Start';
