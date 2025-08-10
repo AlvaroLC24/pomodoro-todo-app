@@ -106,6 +106,7 @@ function delay(ms) {
 // en mitad de esos dos segundos.
 function cancelDelay() {
   clearTimeout(delayTimeoutId);
+  message.classList.add('message-hidden');
 }
 
 
@@ -270,18 +271,21 @@ function resetStartPauseButton() {
 
 pomodoroButton.addEventListener('click', () => {
   switchMode('pomodoro')
+  stopCountdown();
   resetStartPauseButton();
   updateScreen();
 })
 
 shortBreakButton.addEventListener('click', () => {
   switchMode('shortBreak');
+  stopCountdown();
   resetStartPauseButton();
   updateScreen();
 })
 
 longBreakButton.addEventListener('click', () => {
   switchMode('longBreak');
+  stopCountdown();
   resetStartPauseButton();
   updateScreen();
 })

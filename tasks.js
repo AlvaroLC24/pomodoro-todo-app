@@ -17,6 +17,11 @@ let currentEditContext;
 export let selectedTaskIndex;
 let totalCompletedPomodoros = JSON.parse(localStorage.getItem('totalCompletedPomodoros')) || 0;
 
+// Se usa en renderTodoList() y en la función sobre el hamburguer menu
+let isHidingCompletedTasks = false;
+let isHidingAllTasks = false;
+let hideMode = 'none'; // valores: none, all, completed, incompleted
+
 renderTodoList();
 
 function saveToStorage() {
@@ -104,11 +109,21 @@ function renderTodoList() {
   todoList.forEach((todoObject, index) => {
     const {name, estimatedPomodoros, completedPomodoros, done} = todoObject;
     // const checkClass = todoObject.done ? 'check-button-checked' : '';
+
+
+    // if (isHidingAllTasks) return;
+    // if (isHidingCompletedTasks && done) return;
+    if (hideMode === 'all') return;
+    if (hideMode === 'completed' && done) return;
+    if (hideMode === 'incompleted' && !done) return;
+
+
     const html = `
-      <div class="individual-task js-individual-task js-individual-task-${index}"
+      <div class="individual-task js-individual-task js-individual-task-${index}
+                  ${done ? 'completed' : ''}"
         draggable="true">
         <button class="check-button js-check-button-${index}">
-          ${todoObject.done ? '✔' : ''}
+          ${done ? '✔' : ''}
         </button>
         <p class="task-text js-task-text-${index}">${name}</p>
         <p class="task-estimation
@@ -124,6 +139,13 @@ function renderTodoList() {
       </div>
       <div class="js-individual-task-edit-${index}"></div>
     `;
+
+    // const buttonChecked = document.querySelector(`.js-check-button-${index}`);
+    // if (isHidingCompletedTasks && buttonChecked.innerHTML === '✔') {
+    //   html='';
+    // } else if (isHidingAllTasks) {
+    //   html='';
+    // }
     todoListHTML += html;
   });
 
@@ -315,3 +337,192 @@ export function updateCompletedPomodoros(selectedTaskIndex) {
   localStorage.setItem('totalCompletedPomodoros', JSON.stringify(totalCompletedPomodoros));
   renderTodoList();
 }
+
+
+
+
+// FUNCIÓN PARA MOSTRAR EL HTML DEL HAMBURGUER-MENU
+// let isHidingCompletedTasks = false;
+// let isHidingAllTasks = false;
+
+
+function expandHamburguerMenu() {
+  const menuHTML = `
+    <div class="menu-item">
+      <img class="menu-icon"
+        src=${isHidingCompletedTasks 
+          ? "icons/eye-show-svgrepo-com.svg" 
+          : "icons/hide-svgrepo-com.svg"}
+        >
+      <p class="menu-text">
+        ${isHidingCompletedTasks ? 'Show' : 'Hide'} completed tasks
+      </p>
+    </div>
+
+    <div class="menu-item">
+      <img class="menu-icon"
+        src=${isHidingAllTasks
+          ? "icons/eye-show-svgrepo-com.svg" 
+          : "icons/hide-svgrepo-com.svg"}
+        >
+      <p class="menu-text">
+        ${isHidingAllTasks ? 'Show' : 'Hide'} all tasks
+      </p>
+    </div>
+
+    <div class="menu-item">
+      <img class="menu-icon" src="icons/trash-outline.svg">
+      <p class="menu-text">Clear completed tasks</p>
+    </div>
+    <div class="menu-item">
+      <img class="menu-icon" src="icons/trash-outline.svg">
+      <p class="menu-text">Clear all tasks</p>
+    </div>
+  `
+  document.querySelector('.js-hamburguer-menu-extend')
+    .innerHTML = menuHTML;
+}
+
+const menu = document.querySelector('.js-hamburguer-menu-extend');
+
+document.querySelector('.js-hamburguer-menu-button')
+  .addEventListener('click', (e) => {
+    e.stopPropagation();
+    expandHamburguerMenu();
+    menu.classList.toggle('open');
+  });
+
+document.addEventListener('click', () => {
+    if (menu.classList.contains('open')) {
+      menu.classList.remove('open');
+    }
+  })
+
+function manageMenuTasks() {
+  menu.addEventListener('click', (e) => {
+    const clickedItem = e.target.closest('.menu-item');
+    if (!clickedItem) return;
+
+    const action = clickedItem.querySelector('.menu-text').textContent.trim();
+    console.log('Clicked on menu item:', action);
+    switch(action) {
+      case `${isHidingCompletedTasks ? 'Show' : 'Hide'} completed tasks`:
+        // document.querySelectorAll('.js-individual-task.completed')
+        //   .forEach(completedTask => {
+        //     if (isHidingCompletedTasks) {
+        //       completedTask.style.display = 'flex';
+        //     } else {
+        //       completedTask.style.display = 'none';
+        //     }
+        //   });
+
+        // if (isHidingCompletedTasks) {
+        //   isHidingCompletedTasks = true;
+        // } else {
+        //   isHidingCompletedTasks = false;
+        // }
+
+        // if (isHidingAllTasks) {
+        //   isHidingCompletedTasks = true;
+        // }
+
+        isHidingCompletedTasks = !isHidingCompletedTasks;
+        if (isHidingCompletedTasks) {
+          if (isHidingAllTasks) {
+            hideMode = 'all';
+          } else {
+            hideMode = 'completed';
+          }
+        } else {
+            if (!isHidingAllTasks) {
+              hideMode = 'none'
+            } else {
+              hideMode = 'incompleted';
+            }
+        }
+        
+        renderTodoList();
+        break;
+
+      case `${isHidingAllTasks ? 'Show' : 'Hide'} all tasks`:
+        // document.querySelectorAll('.js-individual-task')
+        //   .forEach(task => {
+        //     if (isHidingAllTasks) {
+        //       task.style.display = 'flex';
+        //       isHidingCompletedTasks = false;
+        //     } else {
+        //       task.style.display = 'none';
+        //     }
+        //   });
+
+
+        // if (isHidingAllTasks) {
+        //   isHidingAllTasks = true;
+        //   isHidingCompletedTasks = false;
+        // } else {
+        //   isHidingAllTasks = false;
+        //   isHidingCompletedTasks = true;
+        //   }
+
+        isHidingAllTasks = !isHidingAllTasks;
+        if (isHidingAllTasks) {
+          if (isHidingCompletedTasks) {
+            hideMode = 'all';
+            // isHidingCompletedTasks = false;
+          } else {
+            hideMode = 'all'
+            isHidingCompletedTasks = true;
+          }
+        } else {
+          hideMode = 'none';
+          isHidingCompletedTasks = false;
+        }
+        
+        renderTodoList();
+        break;
+        
+      case 'Clear completed tasks':
+        // Se quitan, pero al clicar hide, y luego show, se muestran.
+        // document.querySelectorAll('.js-individual-task.completed')
+        // .forEach(completedTask => {
+        //   completedTask.remove();
+        // });
+
+        for (let i = todoList.length - 1; i >= 0; i--) {
+          if (todoList[i].done) {
+            todoList.splice(i, 1);
+          }
+        }
+
+        saveToStorage();
+        renderTodoList();
+        break;
+      
+      case 'Clear all tasks':
+        // Se quitan, pero al clicar hide, y luego show, se muestran.
+        // document.querySelectorAll('.js-individual-task')
+        //   .forEach(task => {
+        //     task.remove();
+        //   })
+        todoList.length = 0;
+        saveToStorage();
+        renderTodoList();
+        break;
+    }
+  })
+}
+manageMenuTasks();
+
+/*
+Tengo que manejar que los colores cambien a gris como diciendo
+que no se puede clicar. Por ejemplo, cuando elimino las tareas
+que no se pueda clicar en hide/show completed tasks (de color gris)
+hasta que no añada una tarea nueva.
+*/
+
+
+/*
+<div class="task js-individual-task completed">
+  <!-- contenido de la tarea -->
+</div>
+*/

@@ -4,8 +4,10 @@
   padding: 10px 10px;
   display: flex;
   flex-direction: column;
+  /* max-width: 500px;
+  min-width: 440px; */
   max-width: 500px;
-  min-width: 440px;
+  min-width: 500px;
   width: 100%;
   justify-content: center;
   /*grid-template-columns: 2fr 1fr 1fr;*/
@@ -63,6 +65,58 @@
   height: 24px;
   /* border: 1px solid black; */
 }
+
+
+.container2-2 {
+  position: relative;
+  overflow: none;
+}
+/*HAMBURGUER MENU EXTEND*/
+.hamburguer-menu-extend {
+  display: none;
+}
+
+.hamburguer-menu-extend.open {
+  display: flex;
+  flex-direction: column;
+  padding: 5px 5px;
+  background-color: white;
+  
+  border-radius: 6px;
+  border: 1px solid rgb(225, 223, 223);
+  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.5);
+
+  position: absolute;
+  /* bottom: -130px;
+  left: -154px; */
+
+  right: 10px;
+  top: 40px;
+}
+
+.menu-item {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.menu-item:hover {
+  background-color: rgb(222, 226, 234);
+}
+
+.menu-icon {
+  height: 16px;
+}
+.menu-text {
+  font-size: 12px;
+}
+
+
+
+
 
 .tasks {
   display: flex;
@@ -122,6 +176,7 @@
 .task-estimation {
   font-size: 14px;
   margin-right: 4px;
+  margin-left: 4px;
   font-style: italic;
 }
 
@@ -316,3 +371,17 @@
   border: 2px dashed #ccc;   /* hueco visible */
   background: transparent;
 }
+
+
+@media (max-width: 1065px) {
+  .container-tasks {
+    min-width: 430px;
+  }
+}
+
+/* @media (max-width: 800px) {
+  .container.tasks {
+    min-width: 300px;
+  }
+} */
+
