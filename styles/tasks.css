@@ -1,23 +1,51 @@
-.container-tasks {
-  /* border: 1px solid red; */
+.container2 {
+  flex: 1 1 0;
+  min-width: 0;
+  height: 95%;
+
+  display: flex;
+  justify-content: center;
+  overflow-y: auto;
+  border-radius: 20px;
+}
+
+.scroll-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border-radius: inherit;
+}
+
+@media (max-width: 930px) {
+  .container2 {
+    height: auto;
+    overflow: visible;
+    width: 95%;
+  }
+
+  .scroll-content {
+    overflow-y: visible;
+  }
+}
+
+.tasks-container {
   border-radius: 10px;
   padding: 10px 10px;
   display: flex;
   flex-direction: column;
-  /* max-width: 500px;
-  min-width: 440px; */
+  justify-content: center;
   max-width: 500px;
   min-width: 500px;
   width: 100%;
-  justify-content: center;
-  /*grid-template-columns: 2fr 1fr 1fr;*/
-  /*min-height: 80px;*/
-
-  /* background: rgba(255, 255, 255, .7);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px); */
   word-wrap: break-word;
   overflow-wrap: break-word;
+}
+
+
+@media (max-width: 1065px) {
+  .tasks-container {
+    min-width: 430px;
+  }
 }
 
 .tasks-title,
@@ -48,7 +76,6 @@
   padding-bottom: 3px;
   padding-left: 8px;
   padding-right: 8px;
-  /* padding: 6px 8px; */
   display: inline;
   justify-content: center;
   align-items: center;
@@ -61,16 +88,15 @@
 }
 
 .hamburguer-menu {
-  cursor: pointer;
   height: 24px;
-  /* border: 1px solid black; */
 }
 
 
-.container2-2 {
+.inner-container2 {
   position: relative;
   overflow: none;
 }
+
 /*HAMBURGUER MENU EXTEND*/
 .hamburguer-menu-extend {
   display: none;
@@ -81,15 +107,11 @@
   flex-direction: column;
   padding: 5px 5px;
   background-color: white;
-  
   border-radius: 6px;
   border: 1px solid rgb(225, 223, 223);
   box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.5);
 
   position: absolute;
-  /* bottom: -130px;
-  left: -154px; */
-
   right: 10px;
   top: 40px;
 }
@@ -113,7 +135,6 @@
 .menu-text {
   font-size: 12px;
 }
-
 
 
 
@@ -145,7 +166,6 @@
 .individual-task:hover {
   background-color: rgb(246, 244, 244);
   box-shadow: 1px 1px 4px rgb(145, 145, 146);
-  /* border: 1px solid rgb(120, 129, 135); */
 }
 
 .individual-task.task-selected {
@@ -157,7 +177,6 @@
 .check-button {
   margin-right: 10px;
   margin-left: 6px;
-  cursor: pointer;
   background-color: rgba(255, 0, 0, 0);
   width: 24px;
   height: 24px;
@@ -166,7 +185,6 @@
   padding: 0px;
   color: green;
 }
-
 
 .task-text {
   flex: 1;
@@ -183,9 +201,6 @@
 
 .edit-button,
 .remove-button {
-  /* padding: 5px 16px; */
-  cursor: pointer;
-
   background-color: rgb(222, 226, 234);
   height: 36px;
   width: 36px;
@@ -205,7 +220,6 @@
 
 .edit-icon,
 .remove-icon {
-  cursor: pointer;
   height: 18px;
   padding-top: 4px;
 }
@@ -229,10 +243,10 @@
   border: 1px dashed black;
   border-radius: 15px;
   margin-top: 10px;
+  padding: 18px 0px;
   cursor: pointer;
   background-color: rgba(255, 255, 255, 0.3);
   transition: all 0.2s ease;
-  padding: 18px 0px;
   box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.15)
 }
 
@@ -243,13 +257,6 @@
 .add-icon {
   height: 24px;
 }
-
-
-
-  /* border: 1px solid rgb(225, 223, 223);
-  border-radius: 15px;
-  padding: 15px 5px;
-  background-color: #ffffff; */
 
 .pop-up-add-task {
   display: flex;
@@ -300,7 +307,6 @@
 
 .new-task-pomodoros {
   font-weight: bold;
-  color: rgb(48, 47, 47);
   color: rgb(71, 69, 69);
   font-size: 13.5px;
 }
@@ -327,32 +333,27 @@
 }
 
 .save-button {
-  background-color: rgb(56, 56, 148);
-  background-color: rgb(48, 48, 163);
   background-color: rgb(35, 35, 82);
   font-size: 12px;
   padding: 6px 20px;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .save-button:hover {
-  background-color: rgba(47, 47, 177, 0.95);
   background-color: rgba(35, 35, 82, 0.95);
 }
 
 .cancel-button {
-  /* background-color: #555555; */
   background-color: #dad7d7df;
   font-size: 12px;
   padding: 6px 15px;
   color: rgb(36, 36, 36);
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .cancel-button:hover {
   background-color: #c7c5c5f0;
   color: rgb(55, 54, 54);
 }
+
 
 .hidden {
   display: none;
@@ -363,25 +364,8 @@
   opacity: 0.3;
 }
 
-/* .is-dragging :where(button, p, img) {
-  opacity: 0;
-} */
-
 .placeholder {
-  border: 2px dashed #ccc;   /* hueco visible */
+  border: 2px dashed #ccc;
   background: transparent;
 }
-
-
-@media (max-width: 1065px) {
-  .container-tasks {
-    min-width: 430px;
-  }
-}
-
-/* @media (max-width: 800px) {
-  .container.tasks {
-    min-width: 300px;
-  }
-} */
 
