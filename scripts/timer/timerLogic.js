@@ -8,16 +8,16 @@ import { renderTodoList } from "../tasks/tasksView.js";
 // Configuration of modes/phases
 const modes = {
   pomodoro: {
-    minutes: 0,
-    seconds: 10
+    minutes: 25,
+    seconds: 0
   },
   shortBreak: {
-    minutes: 0,
-    seconds: 5
+    minutes: 5,
+    seconds: 0
   },
   longBreak: {
-    minutes: 0,
-    seconds: 15
+    minutes: 15,
+    seconds: 0
   }
 }
 
