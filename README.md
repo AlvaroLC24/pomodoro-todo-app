@@ -69,7 +69,7 @@ The **Pomodoro Technique** is a time management method created by Francesco Ciri
 ## ⚡ Installation
 
 1. Download or clone the repository.
-  `git clone https://github.com/AlvaroLC24/todo-timer-project.git`
+  `git clone https://github.com/AlvaroLC24/pomodoro-todo-app.git`
 2. Go into the project folder
   `cd todo-timer-project`
 3. Run the web app on a local server.
