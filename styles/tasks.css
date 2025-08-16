@@ -305,13 +305,13 @@
   padding-left: 2px;
 }
 
-.new-task-pomodoros {
+.new-task-pomodori {
   font-weight: bold;
   color: rgb(71, 69, 69);
   font-size: 13.5px;
 }
 
-.num-estimated-pomodoros {
+.num-estimated-pomodori {
   width: 40px;
   height: 18px;
   background-color: rgba(230, 230, 230, 0.5);
@@ -319,7 +319,7 @@
   border-radius: 4px;
 }
 
-.num-estimated-pomodoros:focus {
+.num-estimated-pomodori:focus {
   border: 1px solid rgb(94, 93, 93);
   outline: none;
 }

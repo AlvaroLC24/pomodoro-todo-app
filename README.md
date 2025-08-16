@@ -6,6 +6,7 @@ This is a time and task management application based on the Pomodoro technique. 
 
 📌 The project is in progress, but it is already functional.
 
+
 ## ⏰ What is the Pomodoro Technique?
 
 The **Pomodoro Technique** is a time management method created by Francesco Cirillo to improve productivity during work and study. The method divides work time into typically 25-minute intervals dedicated to focusing on a task, followed by short breaks of 5 minutes. After four pomodori, a longer break of around 15 minutes is taken.
@@ -31,7 +32,7 @@ The **Pomodoro Technique** is a time management method created by Francesco Ciri
 - Delete tasks.
 - Complete pomodori and mark tasks as done.
 - Hide/Show completed tasks.
-- View progress of each task (completed / estimated pomodoros <img src="assets/icons/tomato-svgrepo-com.svg" alt="Tomato icon" width="16" height="16">).
+- View progress of each task (completed / estimated pomodori <img src="assets/icons/tomato-svgrepo-com.svg" alt="Tomato icon" width="16" height="16">).
 - Drag and drop tasks to reorder (in process).
 - Persistent storage using Local Storage.
 
@@ -63,7 +64,7 @@ The **Pomodoro Technique** is a time management method created by Francesco Ciri
   - [`icons/`](assets/icons): icons (SVG)
   - [`audio/`](assets/audio): audio files (mp3)
     - [`timer-sound.mp3`](assets/audio/timer-sound.js): audio that plays at the end of each countdown (Sound Effect by [ALEXIS_GAMING_CAM](https://pixabay.com/es/users/alexis_gaming_cam-50011695/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=342934) from [Pixabay](https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=342934))
-  - [`images/`](assets/images): images (PNG)
+  - [`images/`](assets/images): images (PNG and GIF)
 
 
 ## ⚡ Installation
@@ -75,15 +76,21 @@ The **Pomodoro Technique** is a time management method created by Francesco Ciri
 3. Run the web app on a local server.
 
 
+## 🎬 Demo
+
+![Web application demo](assets/images/app-animation.gif)
+
+
 ## 💯 Future Improvements
 
-- Add a timer history to track completed pomodoros and total focused time.
+- Add a timer history to track completed pomodori and total focused time.
 - Include productivity statistics (daily, weekly, or monthly) with charts.
 - Integrate a backend for saving data and syncing tasks across devices.
 - Implement user registration/login.
 - Send notifications when the timer ends or a task is completed.
 - Add unit and integration tests.
 - Optimize and modularize code for better maintainability.
+- Allow users to customize pomodoro and break intervals.
 - Add a theme toggle button.
 - Include a Lofi or instrumental background music playlist with play/pause controls.
 

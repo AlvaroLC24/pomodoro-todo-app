@@ -1,6 +1,6 @@
 import {
   selectedTaskIndex,
-  updateCompletedPomodoros
+  updateCompletedPomodori
 } from "../tasks/tasksModel.js";
 
 import { renderTodoList } from "../tasks/tasksView.js";
@@ -21,7 +21,7 @@ const modes = {
   }
 }
 
-const pomodorosBeforeLongBreak = 4;
+const pomodoriBeforeLongBreak = 4;
 
 let minutes;
 let seconds;
@@ -139,14 +139,14 @@ export function updateScreen() {
 /**
  * Handles the end of a timer phase. Changes the phase,
  * shows a message for two seconds if not cancelled,
- * and increases the number of completed pomodoros when necessary.
+ * and increases the number of completed pomodori when necessary.
  */
 async function handlePhaseEnd() {
   if (currentMode === 'pomodoro') {
-    updateCompletedPomodoros(selectedTaskIndex);
+    updateCompletedPomodori(selectedTaskIndex);
     renderTodoList();
     pomodoroCount++;
-    if (pomodoroCount === pomodorosBeforeLongBreak) {
+    if (pomodoroCount === pomodoriBeforeLongBreak) {
       pomodoroCount = 0;
       applyModeSettings('longBreak');
       showPhaseMessage('Get a long break!', 'longBreak');

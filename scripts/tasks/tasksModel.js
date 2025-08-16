@@ -1,12 +1,12 @@
 // const todoList = [{
 //   name: 'Create Basic Pomodoro Timer',
-//   estimatedPomodoros: 6,
-//   completedPomodoros: 0,
+//   estimatedPomodori: 6,
+//   completedPomodori: 0,
 //   done: false
 // }, {
 //   name: 'Write a Short Story',
-//   estimatedPomodoros: 4,
-//   completedPomodoros: 0,
+//   estimatedPomodori: 4,
+//   completedPomodori: 0,
 //   done: false
 // }];
 
@@ -21,18 +21,18 @@ export let todoList = JSON.parse(localStorage.getItem('todoList')) || [];
 // or an existing one is being edited (value = task index)
 export let currentEditContext = null;
 
-// Total counter of completed pomodoros, stored in localStorage
-let totalCompletedPomodoros = JSON.parse(localStorage.getItem('totalCompletedPomodoros')) || 0;
+// Total counter of completed pomodori, stored in localStorage
+let totalCompletedPomodori = JSON.parse(localStorage.getItem('totalCompletedPomodori')) || 0;
 
 // Index of the selected task (only one can be selected at a time)
 export let selectedTaskIndex;
 
 /**
- * Save the task list and the total completed pomodoros to localStorage
+ * Save the task list and the total completed pomodori to localStorage
  */
 export function saveToStorage() {
   localStorage.setItem('todoList', JSON.stringify(todoList));
-  localStorage.setItem('totalCompletedPomodoros', JSON.stringify(totalCompletedPomodoros));
+  localStorage.setItem('totalCompletedPomodori', JSON.stringify(totalCompletedPomodori));
 
 }
 
@@ -40,13 +40,13 @@ export function saveToStorage() {
 /**
  * Add a new task to the list
  * @param {string} name 
- * @param {number} estimatedPomodoros 
+ * @param {number} estimatedPomodori 
  */
-export function addTask(name, estimatedPomodoros) {
+export function addTask(name, estimatedPomodori) {
   todoList.push({
     name,
-    estimatedPomodoros: parseInt(estimatedPomodoros),
-    completedPomodoros: 0,
+    estimatedPomodori: parseInt(estimatedPomodori),
+    completedPomodori: 0,
     done: false
   });
   saveToStorage();
@@ -55,28 +55,28 @@ export function addTask(name, estimatedPomodoros) {
 
 /**
  * Edit an existing task.
- * Create alerts if the estimated number of pomodoros
- * is negative or less than completed pomodoros.
+ * Create alerts if the estimated number of pomodori
+ * is negative or less than completed pomodori.
  * @param {number} index
  * @param {string} updatedName 
- * @param {number} updatedEstimatedPomodoros 
+ * @param {number} updatedEstimatedPomodori
  * @returns 
  */
-export function editTask(index, updatedName, updatedEstimatedPomodoros) {
+export function editTask(index, updatedName, updatedEstimatedPomodori) {
   const task = todoList[index]
-  const completedPomodoros = task.completedPomodoros;
-  if (updatedEstimatedPomodoros < 0) {
-    alert('Estimated pomodoros cannot be negative.');
+  const completedPomodori = task.completedPomodori;
+  if (updatedEstimatedPomodori < 0) {
+    alert('Estimated pomodori cannot be negative.');
     return;
   }
-  if (updatedEstimatedPomodoros < completedPomodoros) {
-    alert(`Estimated pomodoros cannot be less than completed ones (${completedPomodoros}).`);
+  if (updatedEstimatedPomodori < completedPomodori) {
+    alert(`Estimated pomodori cannot be less than completed ones (${completedPomodori}).`);
     return;
   }
 
   task.name = updatedName;
-  task.estimatedPomodoros = parseInt(updatedEstimatedPomodoros);
-  if (task.estimatedPomodoros > task.completedPomodoros) {
+  task.estimatedPomodori = parseInt(updatedEstimatedPomodori);
+  if (task.estimatedPomodori > task.completedPomodori) {
     task.done = false;
   } else {
     task.done = true;
@@ -90,13 +90,16 @@ export function editTask(index, updatedName, updatedEstimatedPomodoros) {
  * @param {number} index 
  */
 export function removeTask(index) {
-  if (selectedTaskIndex === index) {
-    selectedTaskIndex = null;
-  } else if (selectedTaskIndex > index) {
-    selectedTaskIndex--;
+  const confirmDelete = confirm('Are you sure you want to delete this task?');
+  if (confirmDelete) {
+    if (selectedTaskIndex === index) {
+      selectedTaskIndex = null;
+    } else if (selectedTaskIndex > index) {
+      selectedTaskIndex--;
+    }
+    todoList.splice(index, 1);
+    saveToStorage();
   }
-  todoList.splice(index, 1);
-  saveToStorage();
 }
 
 
@@ -137,25 +140,25 @@ export function setSelectedTaskIndex(index) {
 }
 
 /**
- * Updates the number of completed pomodoros for the selected task.
- * If the estimated number of pomodoros is completed, sets the "done"
+ * Updates the number of completed pomodori for the selected task.
+ * If the estimated number of pomodori is completed, sets the "done"
  * attribute of that task to true, and checks the task.
  * @param {number} selectedTaskIndex - Index of the selected task
  */
-export function updateCompletedPomodoros(selectedTaskIndex) {
+export function updateCompletedPomodori(selectedTaskIndex) {
   const taskObject = todoList[selectedTaskIndex];
   if (selectedTaskIndex !== null) {
     const selectedTask = document.querySelector(`.js-individual-task-${selectedTaskIndex}`);
     if (selectedTask) {
-      if (taskObject.completedPomodoros < taskObject.estimatedPomodoros) {
-        taskObject.completedPomodoros++;
+      if (taskObject.completedPomodori < taskObject.estimatedPomodori) {
+        taskObject.completedPomodori++;
       }
-      if (taskObject.completedPomodoros >= taskObject.estimatedPomodoros) {
+      if (taskObject.completedPomodori >= taskObject.estimatedPomodori) {
         taskObject.done = true;
       }
     }
   }
-  totalCompletedPomodoros++;
-  console.log(totalCompletedPomodoros);
+  totalCompletedPomodori++;
+  console.log(totalCompletedPomodori);
   
   saveToStorage();}

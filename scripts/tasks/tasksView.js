@@ -35,11 +35,11 @@ function openAddPopup() {
                 class="new-task-input js-new-task-input">
       </div>
       <div class="add-task-estimated-pomodoro">
-        <span class="new-task-pomodoros">
-          Estimated Pomodoros:
+        <span class="new-task-pomodori">
+          Estimated Pomodori:
         </span>
-        <input class="num-estimated-pomodoros
-                js-num-estimated-pomodoros" type="number"
+        <input class="num-estimated-pomodori
+                js-num-estimated-pomodori" type="number"
           min="0" value="1" step="1">
       </div>
       <div class="add-task-buttons">
@@ -58,10 +58,10 @@ function openAddPopup() {
   document.querySelector('.js-save-button')
     .addEventListener('click', () => {
       const name = document.querySelector('.js-new-task-input').value;
-      const estimatedPomodoros = document
-        .querySelector('.js-num-estimated-pomodoros').value;
+      const estimatedPomodori = document
+        .querySelector('.js-num-estimated-pomodori').value;
 
-      addTask(name, estimatedPomodoros);
+      addTask(name, estimatedPomodori);
       renderTodoList();
       
       document.querySelector('.js-add-new-task-container')
@@ -103,7 +103,7 @@ export function renderTodoList() {
   let todoListHTML = '';
 
   todoList.forEach((todoObject, index) => {
-    const {name, estimatedPomodoros, completedPomodoros, done} = todoObject;
+    const {name, estimatedPomodori, completedPomodori, done} = todoObject;
 
     if (hideMode === 'all') return;
     if (hideMode === 'completed' && done) return;
@@ -121,7 +121,7 @@ export function renderTodoList() {
         </button>
         <p class="task-text js-task-text-${index}">${name}</p>
         <p class="task-estimation
-                  js-task-estimation-${index}">${completedPomodoros}/${estimatedPomodoros}</p>
+                  js-task-estimation-${index}">${completedPomodori}/${estimatedPomodori}</p>
         <img class="tomato-icon" src="assets/icons/tomato-svgrepo-com.svg">
         <button class="edit-button js-edit-button"
           data-index="${index}">
@@ -210,8 +210,8 @@ export function renderTodoList() {
  */
 function openEditPopup(index) {
   const name = todoList[index].name;
-  const estimatedPomodoros = todoList[index].estimatedPomodoros;
-  const completedPomodoros = todoList[index].completedPomodoros;
+  const estimatedPomodori = todoList[index].estimatedPomodori;
+  const completedPomodori = todoList[index].completedPomodori;
 
   setEditingState(parseInt(index));
 
@@ -229,12 +229,12 @@ function openEditPopup(index) {
                 value="${name.replace(/"/g, '&quot;')}">
       </div>
       <div class="add-task-estimated-pomodoro">
-        <span class="new-task-pomodoros">
-          Estimated Pomodoros:
+        <span class="new-task-pomodori">
+          Estimated Pomodori:
         </span>
-        <input class="num-estimated-pomodoros
-                js-edit-num-estimated-pomodoros" type="number"
-          min="${completedPomodoros}" value=${estimatedPomodoros} step="1">
+        <input class="num-estimated-pomodori
+                js-edit-num-estimated-pomodori" type="number"
+          min="${completedPomodori}" value=${estimatedPomodori} step="1">
       </div>
       <div class="add-task-buttons">
         <button class="save-button js-edit-save-button">Save</button>
@@ -253,11 +253,11 @@ function openEditPopup(index) {
     .addEventListener('click', () => {
       const updatedName = document
         .querySelector('.js-edit-task-input').value;
-      const updatedEstimatedPomodoros = document
-        .querySelector('.js-edit-num-estimated-pomodoros').value;
+      const updatedEstimatedPomodori = document
+        .querySelector('.js-edit-num-estimated-pomodori').value;
       
 
-      editTask(index, updatedName, updatedEstimatedPomodoros);
+      editTask(index, updatedName, updatedEstimatedPomodori);
 
       renderTodoList();
       
