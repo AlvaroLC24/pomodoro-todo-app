@@ -1,10 +1,26 @@
 import { renderTodoList } from "./tasksView.js";
 import { saveToStorage } from "./tasksModel.js";
 
-// Initialization of general variables for the task list menu
-let isHidingCompletedTasks = false;
-let isHidingAllTasks = false;
-export let hideMode = 'none'; // values: none, all, completed, incompleted
+// Initialization of hide settings for the task list menu
+
+const DEFAULT_HIDE_SETTINGS = {
+  isHidingCompletedTasks: false,
+  isHidingAllTasks: false,
+  hideMode: 'none' // values: none, all, completed, incompleted
+};
+
+export let hideSettings = {
+  ...DEFAULT_HIDE_SETTINGS,
+  ...(JSON.parse(localStorage.getItem('hideSettings')) || {})
+};
+
+/**
+ * Save the hide settings to localStorage.
+ */
+function saveHideSettingsToStorage() {
+  localStorage.setItem('hideSettings', JSON.stringify(hideSettings));
+}
+
 
 const menu = document.querySelector('.js-hamburguer-menu-extend');
 
@@ -15,23 +31,23 @@ function expandHamburguerMenu() {
   const menuHTML = `
     <div class="menu-item">
       <img class="menu-icon"
-        src=${isHidingCompletedTasks 
+        src=${hideSettings.isHidingCompletedTasks 
           ? "../assets/icons/eye-show-svgrepo-com.svg" 
           : "../assets/icons/hide-svgrepo-com.svg"}
         >
       <p class="menu-text">
-        ${isHidingCompletedTasks ? 'Show' : 'Hide'} completed tasks
+        ${hideSettings.isHidingCompletedTasks ? 'Show' : 'Hide'} completed tasks
       </p>
     </div>
 
     <div class="menu-item">
       <img class="menu-icon"
-        src=${isHidingAllTasks
+        src=${hideSettings.isHidingAllTasks
           ? "../assets/icons/eye-show-svgrepo-com.svg" 
           : "../assets/icons/hide-svgrepo-com.svg"}
         >
       <p class="menu-text">
-        ${isHidingAllTasks ? 'Show' : 'Hide'} all tasks
+        ${hideSettings.isHidingAllTasks ? 'Show' : 'Hide'} all tasks
       </p>
     </div>
 
@@ -81,37 +97,39 @@ function manageMenuTasks() {
     console.log('Clicked on menu item:', action);
 
     switch(action) {
-      case `${isHidingCompletedTasks ? 'Show' : 'Hide'} completed tasks`:
-        isHidingCompletedTasks = !isHidingCompletedTasks;
-        if (isHidingCompletedTasks) {
-          if (isHidingAllTasks) {
-            hideMode = 'all';
+      case `${hideSettings.isHidingCompletedTasks ? 'Show' : 'Hide'} completed tasks`:
+        hideSettings.isHidingCompletedTasks = !hideSettings.isHidingCompletedTasks;
+        if (hideSettings.isHidingCompletedTasks) {
+          if (hideSettings.isHidingAllTasks) {
+            hideSettings.hideMode = 'all';
           } else {
-            hideMode = 'completed';
+            hideSettings.hideMode = 'completed';
           }
         } else {
-            if (!isHidingAllTasks) {
-              hideMode = 'none'
+            if (!hideSettings.isHidingAllTasks) {
+              hideSettings.hideMode = 'none'
             } else {
-              hideMode = 'incompleted';
+              hideSettings.hideMode = 'incompleted';
             }
         }
+        saveHideSettingsToStorage();
         renderTodoList();
         break;
 
-      case `${isHidingAllTasks ? 'Show' : 'Hide'} all tasks`:
-        isHidingAllTasks = !isHidingAllTasks;
-        if (isHidingAllTasks) {
-          if (isHidingCompletedTasks) {
-            hideMode = 'all';
+      case `${hideSettings.isHidingAllTasks ? 'Show' : 'Hide'} all tasks`:
+        hideSettings.isHidingAllTasks = !hideSettings.isHidingAllTasks;
+        if (hideSettings.isHidingAllTasks) {
+          if (hideSettings.isHidingCompletedTasks) {
+            hideSettings.hideMode = 'all';
           } else {
-            hideMode = 'all'
-            isHidingCompletedTasks = true;
+            hideSettings.hideMode = 'all'
+            hideSettings.isHidingCompletedTasks = true;
           }
         } else {
-          hideMode = 'none';
-          isHidingCompletedTasks = false;
+          hideSettings.hideMode = 'none';
+          hideSettings.isHidingCompletedTasks = false;
         }
+        saveHideSettingsToStorage();
         renderTodoList();
         break;
         
@@ -135,3 +153,4 @@ function manageMenuTasks() {
 }
 
 manageMenuTasks();
+renderTodoList();

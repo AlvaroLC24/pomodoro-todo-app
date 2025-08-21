@@ -1,5 +1,5 @@
 import {
-  selectedTaskIndex,
+  selectedTaskId,
   updateCompletedPomodori
 } from "../tasks/tasksModel.js";
 
@@ -143,7 +143,7 @@ export function updateScreen() {
  */
 async function handlePhaseEnd() {
   if (currentMode === 'pomodoro') {
-    updateCompletedPomodori(selectedTaskIndex);
+    updateCompletedPomodori(selectedTaskId);
     renderTodoList();
     pomodoroCount++;
     if (pomodoroCount === pomodoriBeforeLongBreak) {

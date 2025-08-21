@@ -1,9 +1,11 @@
 // const todoList = [{
+//   id: crypto.randomUUID(),
 //   name: 'Create Basic Pomodoro Timer',
 //   estimatedPomodori: 6,
 //   completedPomodori: 0,
 //   done: false
 // }, {
+//   id: crypto.randomUUID(),
 //   name: 'Write a Short Story',
 //   estimatedPomodori: 4,
 //   completedPomodori: 0,
@@ -18,32 +20,49 @@
 export let todoList = JSON.parse(localStorage.getItem('todoList')) || [];
 
 // Indicates if a new task is being added (value = 'add')
-// or an existing one is being edited (value = task index)
+// or an existing one is being edited (value = task id)
 export let currentEditContext = null;
 
 // Total counter of completed pomodori, stored in localStorage
 let totalCompletedPomodori = JSON.parse(localStorage.getItem('totalCompletedPomodori')) || 0;
 
-// Index of the selected task (only one can be selected at a time)
-export let selectedTaskIndex;
+// Id of the selected task (only one can be selected at a time)
+export let selectedTaskId;
 
 /**
- * Save the task list and the total completed pomodori to localStorage
+ * Save the task list and the total completed pomodori to localStorage.
  */
 export function saveToStorage() {
   localStorage.setItem('todoList', JSON.stringify(todoList));
   localStorage.setItem('totalCompletedPomodori', JSON.stringify(totalCompletedPomodori));
-
 }
 
 
 /**
- * Add a new task to the list
+ * Get the task by its id.
+ * @param {string} taskId - The unique identifier of the task
+ * @returns {Object|null} The matching task object if found, otherwise null
+ */
+export function getTask(taskId) {
+  let matchingTask;
+  
+  todoList.forEach((task) => {
+    if (task.id === taskId) {
+      matchingTask = task;
+    }
+  });
+  return matchingTask;
+}
+
+
+/**
+ * Add a new task to the list.
  * @param {string} name 
  * @param {number} estimatedPomodori 
  */
 export function addTask(name, estimatedPomodori) {
   todoList.push({
+    id: crypto.randomUUID(),
     name,
     estimatedPomodori: parseInt(estimatedPomodori),
     completedPomodori: 0,
@@ -57,13 +76,13 @@ export function addTask(name, estimatedPomodori) {
  * Edit an existing task.
  * Create alerts if the estimated number of pomodori
  * is negative or less than completed pomodori.
- * @param {number} index
+ * @param {string} id
  * @param {string} updatedName 
  * @param {number} updatedEstimatedPomodori
- * @returns 
+ * @returns {void}
  */
-export function editTask(index, updatedName, updatedEstimatedPomodori) {
-  const task = todoList[index]
+export function editTask(id, updatedName, updatedEstimatedPomodori) {
+  const task = getTask(id);
   const completedPomodori = task.completedPomodori;
   if (updatedEstimatedPomodori < 0) {
     alert('Estimated pomodori cannot be negative.');
@@ -86,18 +105,18 @@ export function editTask(index, updatedName, updatedEstimatedPomodori) {
 
 
 /**
- * Remove a task
- * @param {number} index 
+ * Remove a task.
+ * @param {number} id 
  */
-export function removeTask(index) {
+export function removeTask(id) {
   const confirmDelete = confirm('Are you sure you want to delete this task?');
   if (confirmDelete) {
-    if (selectedTaskIndex === index) {
-      selectedTaskIndex = null;
-    } else if (selectedTaskIndex > index) {
-      selectedTaskIndex--;
+    if (selectedTaskId === id) {
+      selectedTaskId = null;
+    } else if (selectedTaskId > id) {
+      selectedTaskId--;
     }
-    todoList.splice(index, 1);
+    todoList.splice(id, 1);
     saveToStorage();
   }
 }
@@ -132,23 +151,23 @@ export function setEditingState(newEditContext) {
 }
 
 /**
- * Sets the index of the currently selected task.
- * @param {number} index 
+ * Sets the id of the currently selected task.
+ * @param {number} id 
  */
-export function setSelectedTaskIndex(index) {
-  selectedTaskIndex = index;
+export function setSelectedTaskId(id) {
+  selectedTaskId = id;
 }
 
 /**
  * Updates the number of completed pomodori for the selected task.
  * If the estimated number of pomodori is completed, sets the "done"
  * attribute of that task to true, and checks the task.
- * @param {number} selectedTaskIndex - Index of the selected task
+ * @param {number} selectedTaskId - Id of the selected task
  */
-export function updateCompletedPomodori(selectedTaskIndex) {
-  const taskObject = todoList[selectedTaskIndex];
-  if (selectedTaskIndex !== null) {
-    const selectedTask = document.querySelector(`.js-individual-task-${selectedTaskIndex}`);
+export function updateCompletedPomodori(selectedTaskId) {
+  const taskObject = getTask(selectedTaskId);
+  if (selectedTaskId !== null) {
+    const selectedTask = document.querySelector(`.js-individual-task-${selectedTaskId}`);
     if (selectedTask) {
       if (taskObject.completedPomodori < taskObject.estimatedPomodori) {
         taskObject.completedPomodori++;

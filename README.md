@@ -33,7 +33,7 @@ The **Pomodoro Technique** is a time management method created by Francesco Ciri
 - Complete pomodori and mark tasks as done.
 - Hide/Show completed tasks.
 - View progress of each task (completed / estimated pomodori <img src="assets/icons/tomato-svgrepo-com.svg" alt="Tomato icon" width="16" height="16">).
-- Drag and drop tasks to reorder (in process).
+- Drag and drop tasks to reorder.
 - Persistent storage using Local Storage.
 
 

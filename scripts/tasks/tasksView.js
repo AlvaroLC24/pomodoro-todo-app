@@ -1,13 +1,13 @@
-import { hideMode } from './tasksMenu.js';
+import { hideSettings } from './tasksMenu.js';
 import {
   todoList,
-  selectedTaskIndex,
+  selectedTaskId,
   addTask,
   editTask,
   removeTask,
   clearEditingState,
   setEditingState,
-  setSelectedTaskIndex} from './tasksModel.js';
+  setSelectedTaskId} from './tasksModel.js';
 
 
 renderTodoList();
@@ -102,36 +102,41 @@ document.querySelector('.js-add-task-container')
 export function renderTodoList() {
   let todoListHTML = '';
 
-  todoList.forEach((todoObject, index) => {
-    const {name, estimatedPomodori, completedPomodori, done} = todoObject;
+  const visibleTasks = todoList.filter((todoObject) => {
+    if (hideSettings.hideMode === 'all') return false;
+    if (hideSettings.hideMode === 'completed' && todoObject.done) return false;
+    if (hideSettings.hideMode === 'incompleted' && !todoObject.done) return false;
+    return true;
+  })
 
-    if (hideMode === 'all') return;
-    if (hideMode === 'completed' && done) return;
-    if (hideMode === 'incompleted' && !done) return;
+  visibleTasks.forEach((todoObject, index) => {
+    const {id, name, estimatedPomodori, completedPomodori, done} = todoObject;
 
     // ----------------------------
     // Generates the HTML for each task
     // ----------------------------
     const html = `
-      <div class="individual-task js-individual-task js-individual-task-${index}
+      <div class="individual-task js-individual-task js-individual-task-${id}
                   ${done ? 'completed' : ''}"
+        data-id="${id}"
         draggable="true">
-        <button class="check-button js-check-button-${index}">
+        <button class="check-button js-check-button-${id}">
           ${done ? '✔' : ''}
         </button>
-        <p class="task-text js-task-text-${index}">${name}</p>
+        <p class="task-text js-task-text-${id}">${name}</p>
         <p class="task-estimation
-                  js-task-estimation-${index}">${completedPomodori}/${estimatedPomodori}</p>
+                  js-task-estimation-${id}">${completedPomodori}/${estimatedPomodori}</p>
         <img class="tomato-icon" src="assets/icons/tomato-svgrepo-com.svg">
         <button class="edit-button js-edit-button"
-          data-index="${index}">
+          data-id="${id}">
           <img class="edit-icon" src="assets/icons/pencil.svg">
         </button>
-        <button class="remove-button js-remove-button">
+        <button class="remove-button js-remove-button"
+          data-id="${id}">
           <img class="remove-icon" src="assets/icons/trash-outline.svg">
         </button>
       </div>
-      <div class="js-individual-task-edit-${index}"></div>
+      <div class="js-individual-task-edit-${id}"></div>
     `;
 
     todoListHTML += html;
@@ -143,29 +148,30 @@ export function renderTodoList() {
   // Task selection management
   // ----------------------------
   /*
-  This part of the code using the selectedTaskIndex variable
+  This part of the code using the selectedTaskId variable
   allows the user to select only one task at a time.
   Clicking on the selected task again deselects it.
   */
-  if (selectedTaskIndex !== null) {
-    const selectedTask = document.querySelector(`.js-individual-task-${selectedTaskIndex}`);
+  if (selectedTaskId !== null) {
+    const selectedTask = document.querySelector(`.js-individual-task-${selectedTaskId}`);
     if (selectedTask) {
       selectedTask.classList.add('task-selected');
     }
   }
   document.querySelectorAll('.js-individual-task')
     .forEach((taskElement, index) => {
+      const taskElementId = taskElement.dataset.id;
       taskElement.addEventListener('click', () => {
-        if (selectedTaskIndex === index) {
+        if (selectedTaskId === taskElementId) {
           taskElement.classList.remove('task-selected');
-          setSelectedTaskIndex(null);
+          setSelectedTaskId(null);
         } else {
           document.querySelectorAll('.js-individual-task')
             .forEach(task => {
               task.classList.remove('task-selected');
             });
           taskElement.classList.add('task-selected');
-          setSelectedTaskIndex(index);
+          setSelectedTaskId(taskElementId);
         }
       });
     });
@@ -175,10 +181,11 @@ export function renderTodoList() {
   // ----------------------------
   document.querySelectorAll('.js-remove-button')
     .forEach((removeButton, index) => {
+      const removeButtonId = removeButton.dataset.id;
       removeButton.addEventListener('click', (e) => {
         e.stopPropagation();
         
-        removeTask(index);
+        removeTask(removeButtonId);
 
         renderTodoList();
       });
@@ -194,8 +201,8 @@ export function renderTodoList() {
 
         clearEditingState();
 
-        const index = editButton.dataset.index;
-        openEditPopup(index);
+        const id = editButton.dataset.id;
+        openEditPopup(id);
       })
     })
 }
@@ -206,16 +213,23 @@ export function renderTodoList() {
  * Generates the HTML. If the "Save" button is clicked,
  * the task changes are saved. If the "Cancel" button is clicked,
  * the changes are discarded.
- * @param {number} index 
+ * @param {number} id 
  */
-function openEditPopup(index) {
-  const name = todoList[index].name;
-  const estimatedPomodori = todoList[index].estimatedPomodori;
-  const completedPomodori = todoList[index].completedPomodori;
+function openEditPopup(id) {
 
-  setEditingState(parseInt(index));
+  const task = getTask(id);
 
-  document.querySelector(`.js-individual-task-${index}`)
+  const name = task.name;
+  const estimatedPomodori = task.estimatedPomodori;
+  const completedPomodori = task.completedPomodori;
+
+  // const name = todoList[index].name;
+  // const estimatedPomodori = todoList[index].estimatedPomodori;
+  // const completedPomodori = todoList[index].completedPomodori;
+
+  setEditingState(parseInt(id));
+
+  document.querySelector(`.js-individual-task-${id}`)
     .classList.add('hidden');
 
   // ----------------------------
@@ -243,7 +257,7 @@ function openEditPopup(index) {
     </div>
   `;
 
-  document.querySelector(`.js-individual-task-edit-${index}`)
+  document.querySelector(`.js-individual-task-edit-${id}`)
     .innerHTML = html;
   
   // ----------------------------
@@ -257,7 +271,7 @@ function openEditPopup(index) {
         .querySelector('.js-edit-num-estimated-pomodori').value;
       
 
-      editTask(index, updatedName, updatedEstimatedPomodori);
+      editTask(id, updatedName, updatedEstimatedPomodori);
 
       renderTodoList();
       
@@ -275,25 +289,11 @@ function openEditPopup(index) {
   // ----------------------------
   document.querySelector('.js-edit-cancel-button')
     .addEventListener('click', () => {
-      document.querySelector(`.js-individual-task-edit-${index}`)
+      document.querySelector(`.js-individual-task-edit-${id}`)
         .innerHTML = '';
-      document.querySelector(`.js-individual-task-${index}`)
+      document.querySelector(`.js-individual-task-${id}`)
         .classList.remove('hidden');
 
       clearEditingState();
     });
 }
-
-
-/*
-Tengo que manejar que los colores cambien a gris como diciendo
-que no se puede clicar. Por ejemplo, cuando elimino las tareas
-que no se pueda clicar en hide/show completed tasks (de color gris)
-hasta que no añada una tarea nueva.
-*/
-/*
-I need to handle changing the colors to gray to indicate
-that they cannot be clicked. For example, when tasks are deleted,
-the hide/show completed tasks buttons (gray color) should not
-be clickable until a new task is added.
-*/
